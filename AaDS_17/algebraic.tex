@@ -128,7 +128,7 @@ The implementation of algebraic data types and algorithms that
  \item compute new algebraic structures from existing ones
 \end{compactitem}
 are studied in the field of \emph{computer algebra}.
-This is essential to for mathematical computation.
+This is essential for mathematical computation.
 \medskip
 
 Additionally, many algorithms can be easily generalized to take an arbitrary structure as their input.
@@ -175,5 +175,9 @@ that satisfies the specification
 \[sqmult(mon, x, 0)=mon.e\]
 \[sqmult(mon, x, n+1)=mon.op(sqmult(mon, x, n), x)\]
 and whose time complexity is $\Theta(\log_2 n)$.
+
+\begin{exercise}
+Implement this function.
+\end{exercise}
 
 % matrix multiplication for any semi-ring? use for flow?

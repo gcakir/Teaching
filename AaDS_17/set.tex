@@ -1,7 +1,52 @@
+Like lists, sets are collections of objects.
+Usually, these are polymorphic: $Set[A]$ contains all finite sets of elements of type $A$, just like $List[A]$ contains all lists of elements of type $A$.
+The difference between sets and lists can be seen in the following diagram:
+
+\begin{center}
+\begin{tabular}{|l||l|l|}
+\hline
+& order matters & order does not matter \\
+\hline\hline
+repetition matters & lists & multisets/bags \\
+repetition does not matter & unique list/sorted set & sets \\
+\hline
+\end{tabular}
+\end{center}
+
+Thus, sets arise from lists if we remove all repetitions and ignore the order.
+For example, the sets $\{1,2,1,3\}$ and $\{3,2,1\}$ are equal, whereas the lists $[1,2,1,3]$ and $[3,2,1]$ are different.
+
+\paragraph{Collection Data Structures}
+In the following, we only consider sets.
+But it is worth briefly mentioning the general case as well:
+In general, we have $4$ very similar polymorphic data structures: $Set[A]$, $List[A]$, $Multiset[A]$, and $UniqueList[A]$.
+These and some related ones are often called \emph{collection} data structures.
+
+In \emph{multisets} (also called \emph{bags}) repetitions matter but not order.
+An important application are databases and statistical data sets.
+For example, the average of the multiset $Multiset(3,3,9)$ is $5$ whereas the average of the set $\{3,3,9\}=\{3,9\}$ is $6$.
+
+In \emph{unique lists} (also called \emph{sorted sets} and some similar names) order matters but not repetitions.
+These are not as commonly used as the other collection data structures --- often it is easier to use lists and simply remember that there are no repetitions than to implement unique lists separately.
+Therefore, this data structure does not even have a standard name.
+
+Sets can be seen as the special case of multisets where every elements occurs at most once.
+Most operations on sets can be easily generalized to multisets.
+For example, $Multiset(1,1,2)\cup Multiset(1,2)=Multiset(1,1,1,2,2)$.
+Correspondingly, unique lists can be seen the special case of lists, where every element occurs at most once.
+Most operations on lists can be easily specialized to unique lists.
+For example, $UniqueList(1,3,5)+UniqueList(2,4)=UniqueList(1,3,5,2,4)$.
+
+Several important operations are common to all collection data structures.
+For example, $contains[A](x,a)$ for $a\in A$ works the same way no matter whether $x$ is a set, list, multiset, or unique list of elements of $A$.
+
+Moreover, all collection data structures have in common that we can implement them mutably or immutably.
+Thus, we actually have $2\times 2\times 2=8$ data structures organized by the three properties of repetition, order, and mutability.
+
 \section{Specification}
 
 The set $Set[A]$ contains the finite subsets of $A$.
-It is countable if $A$.
+It is countable if $A$ is countable.
 
 Sets can be mutable or immutable.
 The main operations for immutable sets are:
@@ -68,7 +113,7 @@ A major drawback is the memory requirement: We need $\Theta(m)$ for each $x:Set[
 \subsubsection{Design}
 If $A$ is much larger than the sets to be represented, a better data structure for $Set[A]$ is $ListSet[A]$.
 It represents the set $\{a_1,\ldots,a_n\}$ as the list $[a_1,\ldots,a_n]$.
-Thus, it represent sets as lists without repetition.
+Thus, it represents sets as lists without repetition.
 
 The operations on $ListSet[A]$ are defined in the same way as for $List[A]$ with one exception: the $insert(x,a)$ operation does nothing if $x$ already contains $a$.
 
@@ -96,11 +141,11 @@ This is called the hash function.
 $hash$ has two purposes:
 \begin{compactitem}
  \item The set $A$ is supported by a finite, managably small set $\Z_m$.
-   That makes if feasible to use arrays of length $m$.
+   That makes it feasible to use arrays of length $m$.
  \item The equality operation on $A$ is supported by the $O(1)$ equality on $\Z_m$.
    To check $a=a'$, we first check $hash(a)=hash(a')$.
    If false, we know $a\neq a'$; otherwise, we call the usual equality on $A$.
-   That minimizes the number of equality on $A$ is called.
+   That minimizes the number of times equality on $A$ is called.
 \end{compactitem}
 
 Of course, the function $hash$ will usually not be injective.
@@ -123,7 +168,7 @@ Thus, the bucket for $i$ contains all elements of the set whose hash value is $i
 
 \subsubsection{Complexity}
 If $n$ is the size of the subset of $A$, the sets $h[0]$, \ldots, $h[m-1]$ have average size $n/m$.
-Thus, $contains$, $insert$ and $delete$ take $n/m$ on average.
+Thus, $contains$, $insert$, and $delete$ take $n/m$ on average.
 $equal$, $union$, $inter$, and $diff$ are similarly sped up.
 \medskip
 
@@ -214,7 +259,7 @@ One way to do that is to use red-black trees (see Sect.~\ref{sec:ad:redblacktree
 \subsection{Red-Black Trees}\label{sec:ad:redblacktree}
 
 Red-black trees are a sophisticated variant of binary search trees.
-They guarantee $\Theta(\log n)$ cost for for insertion and deletion.
+They guarantee $\Theta(\log n)$ cost for insertion and deletion.
 
 \subsection{Characteristic Functions}\label{sec:ad:charfun}
 

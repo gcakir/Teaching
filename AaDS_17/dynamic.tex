@@ -42,7 +42,7 @@ In the simplest case a dynamic programming algorithm looks like this:
 }
 \end{acode}
 
-Here $x$ is the result of computing $P(i)$ using all results for lower values.
+Here $r$ is the result of computing $P(i)$ using all results for lower values.
 In this variant of dynamic programming, the table $results$ is thrown away after each call to $dynamic$.
 Alternatively, the table could be kept for later function calls.
 
@@ -67,6 +67,20 @@ The general algorithm becomes
 	results[a,k]
 }
 \end{acode}
+
+\begin{remark}
+The technique of changing a problem $P(a)$ to a problem $Q(a,i)$ by
+\begin{compactitem}
+ \item adding an auxiliary variable $i$ that makes the problem more general
+ \item using a fixed $k$ to recover the original problem as the special case $P(a)=Q(a,k)$
+\end{compactitem}
+is not specific to dynamic programming.
+
+We find it in many recursive algorithms as well.
+Examples are quicksort from Sect.~\ref{sec:ad:sort:quick} and tail-recursion from Sect.~\ref{sec:ad:recurse:tail}.
+
+In all cases, the more general problem is --- counter-intuitively --- easier to solve because the extra generality makes deep properties visible that can be used to reduce problems to smaller subproblems and then design efficient algorithms.
+\end{remark}
 
 \subsection{Correctness}
 The main condition for correctness is that $P(x)=Q(x,k)$ for all $x\in A$.
@@ -118,7 +132,7 @@ So the overall complexity is $\Theta(n\cdot |D|)$.
 \paragraph{Problem}
 We revisit the problem of finding the cheapest path in a directed, cost-weighted graph $G=(N,E)$.
 As before, we write $weight(x,y)$ for the weight of the edge from $x$ to $y$, using $0$ if there is no edge.
-We assume $weight(x,y)>0$ so that the cheapest can have at most length $k=|E|$.
+We assume $weight(x,y)>0$ so that the cheapest path can have at most length $k=|E|$.
 
 \paragraph{Design}
 We use $A=N\times N$, and for $x=(x_1,x_2)$, we want to find the cost of the cheapest path $P(x)$ from $x_1$ to $x_2$.
